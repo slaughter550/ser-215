@@ -56,7 +56,7 @@ public class Gameboard {
             placeShipRandomly(fleet.getShip(i));
         }
     }
-//--------------------------------------------------this chuck needs a lot of help
+//--------------------------------------------------this chunk needs a lot of help
     private void placeShipRandomly(Ship s) {
 
         Random rand = new Random();
