@@ -13,12 +13,13 @@ public class Gameboard {
     private JFrame frame;
     private JPanel panel;
     private Map <String, Tile> tileMap = new HashMap<String, Tile>();
-    private String[] alphaTiles = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    //rows:yCoord
+    private String[] alphaTiles = {"A","B","C","D","E","F","G","H","I","J"};
 
-
+//---------------------------------------------------------------Create Game Board
     public Gameboard(){
+
         frame = new JFrame();
-        frame.setResizable(false);
 
         panel = new JPanel();
         frame.add(panel);
@@ -26,18 +27,19 @@ public class Gameboard {
         this.generateTiles();
         this.placeShips();
 
+        //frame specs
+        frame.setResizable(false);
         frame.setSize(320,345);
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-
     }
 
-    private void generateTiles(){
+//--------------------------------------------------------------------------------
+    private void generateTiles() {
 
-        for (int i = 0; i < alphaTiles.length; i++){
-            for (int j = 1; j <= 10; j++){
+        for (int i = 0; i < alphaTiles.length; i++) {
+            for (int j = 1; j <= 10; j++) {
                 String tileID = (alphaTiles[i] + Integer.toString(j));
                 Tile tile = new Tile(tileID);
                 panel.add(tile);
@@ -45,23 +47,20 @@ public class Gameboard {
             }
         }
     }
-
+//--------------------------------------------------------------------------------
     private void placeShips(){
 
         Fleet fleet = new Fleet();
 
         for (int i=0; i < fleet.getFleetSize(); i++){
-
             placeShipRandomly(fleet.getShip(i));
-
         }
     }
-
+//--------------------------------------------------this chuck needs a lot of help
     private void placeShipRandomly(Ship s) {
+
         Random rand = new Random();
-
         boolean checking = true;
-
         ArrayList <Tile> possibleTiles = new ArrayList<Tile>();
 
         while (checking) {
@@ -75,11 +74,11 @@ public class Gameboard {
 //            boolean xOriented = Math.random() < 0.5;
             boolean yOriented = true;
 
-
             //TODO: if x oriented
             if (yOriented) {
-
+                //count occupancies
                 int tileSum = 0;
+                
                 for (int i = 0; i < s.getShipSize(); i++) {
                     Tile tile = tileMap.get(alphaTiles[xCoord + i] + Integer.toString(yCoord));
                     possibleTiles.add(tile);
@@ -87,41 +86,28 @@ public class Gameboard {
                         tileSum++;
                     }
                 }
+                //exit loop
                 if (tileSum == 0){
-
                     checking = false;
-
                 }
+                //redo loop
                 else{
                     checking = true;
                 }
-
             }
-
         }
+        
 
+        //place ship: set occupied to true
         for (Tile t: possibleTiles){
             for (Component component : panel.getComponents()) {
                 Tile tileToCheck = (Tile)component;
                 if (t.getTileID() == tileToCheck.getTileID()) {
                     tileToCheck.setOccupied(true);
+                    //test print
                     System.out.println(t.getTileID() + "is now occupied");
                 }
             }
         }
-
-
     }
-
-
-    protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
-
 }
