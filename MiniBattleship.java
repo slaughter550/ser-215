@@ -4,6 +4,7 @@
  */
 
 //TODO: second panel gameboard
+//TODO: place ships horizontally
 //TODO: only computer ocean is clickable
 //TODO: end game
 //TODO: surrender button
@@ -21,18 +22,6 @@ public class MiniBattleship {
 
 
     }
-
-//TODO: second panel gameboard
-//TODO: only computer ocean is clickable
-//TODO: end game
-//TODO: surrender button
-//TODO: scoreboard
-//TODO: game board ship placement
-//TODO:
-//TODO:
-//TODO: prettify
-
-
 
 
 
