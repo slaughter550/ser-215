@@ -56,31 +56,54 @@ public class Gameboard {
             placeShipRandomly(fleet.getShip(i));
         }
     }
-//--------------------------------------------------this chunk needs a lot of help
+
+//---------------------------------------*need to triple checking loops for breaks
     private void placeShipRandomly(Ship s) {
+        int xCoord;
+        int yCoord;
 
         Random rand = new Random();
         boolean checking = true;
         ArrayList <Tile> possibleTiles = new ArrayList<Tile>();
 
         while (checking) {
+            boolean xOriented = Math.random() < 0.5;
 
             possibleTiles.clear();
 
-            int xCoord = rand.nextInt(10 - s.getShipSize());
-            int yCoord = rand.nextInt(10 - s.getShipSize())+1;
-
-            //TODO: check orientation before setting possible coordinates
-//            boolean xOriented = Math.random() < 0.5;
-            boolean yOriented = true;
-
-            //TODO: if x oriented
-            if (yOriented) {
+            if (xOriented) {
                 //count occupancies
                 int tileSum = 0;
-                
-                for (int i = 0; i < s.getShipSize(); i++) {
+
+                //restrict x origin coordinate
+                xCoord = rand.nextInt(10 - s.getShipSize());
+                yCoord = rand.nextInt(10)+1;
+
+                for (int i = 0; i < s.getShipSize(); i++){
                     Tile tile = tileMap.get(alphaTiles[xCoord + i] + Integer.toString(yCoord));
+                    possibleTiles.add(tile);
+                    if (tile.isOccupied()) {
+                        tileSum++;
+                    }
+                }
+                //exit loop
+                if (tileSum == 0){
+                    checking = false;
+                }
+                //redo loop
+                else{
+                    checking = true;
+                }
+            }
+            else{
+                int tileSum = 0;
+
+                //restrict y origin coordinate
+                xCoord = rand.nextInt(10);
+                yCoord = rand.nextInt(10-s.getShipSize())+1;
+
+                for (int i = 0; i < s.getShipSize(); i++){
+                    Tile tile = tileMap.get(alphaTiles[xCoord] + Integer.toString(yCoord+i));
                     possibleTiles.add(tile);
                     if (tile.isOccupied()) {
                         tileSum++;
