@@ -76,7 +76,7 @@ public class Gameboard {
             boolean yOriented = true;
 
 
-
+            //TODO: if x oriented
             if (yOriented) {
 
                 int tileSum = 0;
