@@ -4,8 +4,6 @@
  */
 
 //TODO: second panel gameboard
-//TODO: place ships horizontally
-//TODO: only computer ocean is clickable
 //TODO: end game
 //TODO: surrender button
 //TODO: scoreboard
