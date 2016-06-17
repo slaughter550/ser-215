@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -55,16 +54,19 @@ public class Controller extends JPanel {
 		computerShips = new ShipList();
 		humanShips = new ShipList();
 		Ship ship;
-		Random r = new Random();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 1; i <= 5; i++) {
 			do {
-				ship = new Ship(r.nextInt(11), r.nextInt(10), i, r.nextBoolean());
+				ship = Ship.createRandom(i);
 			} while (computerShips.shipAlreadyExists(ship));
+			computerShips.add(ship);
 
 			do {
-				ship = new Ship(r.nextInt(11), r.nextInt(10), i, r.nextBoolean());
+				ship = Ship.createRandom(i);
 			} while (humanShips.shipAlreadyExists(ship));
+			humanShips.add(ship);
+
+			System.out.println(i);
 		}
 	}
 }

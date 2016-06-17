@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Ship {
 
@@ -12,6 +13,19 @@ public class Ship {
 		this.y = y;
 		this.size = size;
 		this.xOriented = xOriented;
+	}
+
+	public static Ship createRandom(int size) {
+		Random r = new Random();
+		boolean xOriented = r.nextBoolean();
+		int x = r.nextInt(11), y = r.nextInt(11);
+		if (xOriented) {
+			x = r.nextInt(11 - size) + 1;
+		} else {
+			y = r.nextInt(11 - size) + 1;
+		}
+
+		return new Ship(x, y, size, xOriented);
 	}
 
 	public void hit(int i) {
@@ -66,5 +80,10 @@ public class Ship {
 
 	public int getY() {
 		return y;
+	}
+
+	public String toString() {
+		return String.format("X - %s, Y - %s, Size - %s, Orientation - %s", x, y, size,
+				xOriented ? "x-oriented" : "y-oriented");
 	}
 }
