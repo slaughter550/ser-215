@@ -43,6 +43,32 @@ public class Map extends JPanel implements MouseListener {
 		g.setColor(Color.lightGray);
 		drawBoard(g);
 		drawShips(g);
+		drawHits(g);
+	}
+
+	public void drawHits(Graphics2D g) {
+		for (Ship ship : controller.computerShips) {
+			ship.getHits().forEach((i) -> {
+				float shipX = middleX + (ship.getX() * squareWidth);
+				float shipY = (ship.getY() * squareHeight) + offset;
+				
+				if(ship.isXOriented()) {
+					shipX += i * squareWidth; 
+				} else {
+					shipY += i * squareHeight; 
+				}
+				
+				System.out.println(shipX + " - " + shipY);
+				
+				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, squareWidth, squareHeight);
+				Color c = g.getColor();
+				g.setColor(Color.red);
+				g.draw(rect);
+				g.setColor(c);
+				
+				System.out.println(i);
+			});
+		}
 	}
 
 	public void drawShips(Graphics2D g) {
@@ -125,15 +151,28 @@ public class Map extends JPanel implements MouseListener {
 	public void translateClickToSquare(Point p) {
 		if (p.getY() <= offset || p.getY() <= offset) {
 			// Click off the map in the gutter
-		} else if (p.getX() >= middleX - offset) {
-			// Clicked on computer side own side
+		} else if (p.getX() >= middleX) {
+			System.out.println(p);
+			double clickXCord = p.getX() - middleX;
+			double clickYCord = p.getY() - offset;
+
+			int clickX = (int) Math.ceil(clickXCord / squareWidth) - 1;
+			int clickY = (int) Math.ceil(clickYCord / squareHeight) - 1;
+
+			System.out.println(clickX + " - " + clickY);
+			Ship s = controller.computerShips.shipAtCordinates(clickX, clickY);
+			if (s != null) {
+				s.hitCordinate(clickX, clickY);
+			}
+
+			repaint();
 		} else {
 			// Clicked on their own side
 		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(e.getPoint());
+		translateClickToSquare(e.getPoint());
 	}
 
 	public void mousePressed(MouseEvent e) {

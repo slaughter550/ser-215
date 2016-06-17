@@ -13,7 +13,7 @@ public class Ship {
 	public final static int carrier = 4;
 
 	private static final Integer[] typeSizes = { 2, 3, 3, 4, 5 };
-	private ArrayList<Integer> hits;
+	private ArrayList<Integer> hits = new ArrayList<Integer>();
 
 	public Ship(int x, int y, int type, boolean xOriented) {
 		this.x = x;
@@ -98,5 +98,9 @@ public class Ship {
 
 	public int getType() {
 		return type;
+	}
+
+	public ArrayList<Integer> getHits() {
+		return hits;
 	}
 }

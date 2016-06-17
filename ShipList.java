@@ -23,4 +23,13 @@ public class ShipList extends ArrayList<Ship> {
 
 		return false;
 	}
+	
+	public Ship shipAtCordinates(int x, int y) {
+		for (Ship ship : this) {
+			if(ship.isCordinate(x, y))
+				return ship;
+		}
+		
+		return null;
+	}
 }

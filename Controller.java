@@ -71,5 +71,7 @@ public class Controller extends JPanel {
 			} while (humanShips.shipAlreadyExists(ship));
 			humanShips.add(ship);
 		}
+		
+		System.out.println(computerShips);
 	}
 }
