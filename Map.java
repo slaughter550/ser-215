@@ -1,4 +1,5 @@
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,15 +14,19 @@ public class Map extends JPanel {
 	private static final long serialVersionUID = 1L;
 	float width, height, middleX, middleY;
 	final int offset = 30;
+	final Color bgColor = new Color(0x0E1F2C);
 
 	public Dimension getPreferredSize() {
 		return new Dimension(getWidth(), getHeight());
 	}
 
 	public void paintComponent(Graphics g1) {
+		super.paintComponent(g1);
+		setBackground(bgColor);
 		setVars();
 
 		Graphics2D g = (Graphics2D) g1;
+		g.setColor(Color.lightGray);
 		drawBoard(g);
 	}
 
