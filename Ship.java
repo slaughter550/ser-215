@@ -20,13 +20,18 @@ public class Ship {
 		}
 	}
 
-	public boolean hitCordinate(int x, int y) {
-		boolean hit = false;
-		if (xOriented && this.x >= x && this.x + size < x) {
-			hit = true;
-		} else if (!xOriented && this.y >= y && this.y + size < y) {
-			hit = true;
+	public boolean isCordinate(int x, int y) {
+		if (xOriented && x >= this.x && x < this.x + size && this.y == y) {
+			return true;
+		} else if (!xOriented && y >= this.y && y < this.y + size && this.x == x) {
+			return true;
 		}
+
+		return false;
+	}
+
+	public boolean hitCordinate(int x, int y) {
+		boolean hit = isCordinate(x, y);
 
 		if (hit) {
 			hit(cordinateToShipIndex(x, y));
@@ -45,5 +50,21 @@ public class Ship {
 
 	public boolean isSunk() {
 		return hits.size() == size;
+	}
+
+	public boolean isXOriented() {
+		return xOriented;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 }

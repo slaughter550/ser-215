@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,7 +14,7 @@ public class Controller extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private static ArrayList<Ship> computerShips, humanShips;
+	private static ShipList computerShips, humanShips;
 
 	public static void main(String[] args) {
 
@@ -52,6 +52,19 @@ public class Controller extends JPanel {
 	}
 
 	public static void initializeShips() {
+		computerShips = new ShipList();
+		humanShips = new ShipList();
+		Ship ship;
+		Random r = new Random();
 
+		for (int i = 0; i < 5; i++) {
+			do {
+				ship = new Ship(r.nextInt(11), r.nextInt(10), i, r.nextBoolean());
+			} while (computerShips.shipAlreadyExists(ship));
+
+			do {
+				ship = new Ship(r.nextInt(11), r.nextInt(10), i, r.nextBoolean());
+			} while (humanShips.shipAlreadyExists(ship));
+		}
 	}
 }
