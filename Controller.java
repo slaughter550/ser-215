@@ -42,7 +42,7 @@ public class Controller extends JPanel {
 		g.setColor(Color.lightGray);
 		g.drawLine(0, getHeight(), getWidth(), getHeight());
 
-		g.drawString("Human Player", getWidth() * (float).25, getHeight() - 20);
-		g.drawString("Computer Player", getWidth() * (float).75, getHeight() - 20);
+		g.drawString("Human Player", getWidth() * (float) .25, getHeight() - 20);
+		g.drawString("Computer Player", getWidth() * (float) .75, getHeight() - 20);
 	}
 }
