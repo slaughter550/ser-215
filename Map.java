@@ -3,23 +3,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.TexturePaint;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Map extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
-	float width, height, middleX, middleY;
-	final int offset = 30;
+	Controller controller;
+	float width, height, middleX, middleY, squareWidth, squareHeight;
+	final float offset = 30;
 	final Color bgColor = new Color(0x0E1F2C);
 
-	public Map() {
+	public Map(Controller c) {
+		controller = c;
 		addMouseListener(this);
 	}
 
@@ -35,6 +42,35 @@ public class Map extends JPanel implements MouseListener {
 		Graphics2D g = (Graphics2D) g1;
 		g.setColor(Color.lightGray);
 		drawBoard(g);
+		drawShips(g);
+	}
+
+	public void drawShips(Graphics2D g) {
+		for (Ship ship : controller.humanShips) {
+			float shipWidth = (ship.isXOriented() ? squareWidth * ship.getSize() : squareWidth) - 10;
+			float shipHeight = (ship.isXOriented() ? squareHeight : squareHeight * ship.getSize()) - 10;
+
+			float shipX = (ship.getX() * squareWidth) + offset + 5;
+			float shipY = (ship.getY() * squareHeight) + offset + 5;
+
+			try {
+				String path = getClass()
+						.getResource("shipimages/" + ship.getType() + (ship.isXOriented() ? "-h" : "") + ".png")
+						.getPath();
+				path = java.net.URLDecoder.decode(path, "UTF-8");
+				BufferedImage img = ImageIO.read(new File(path));
+
+				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, shipWidth, shipHeight);
+				TexturePaint imagep = new TexturePaint(img, rect);
+
+				Paint p = g.getPaint();
+				g.setPaint(imagep);
+				g.fill(rect);
+				g.setPaint(p);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void setVars() {
@@ -42,6 +78,9 @@ public class Map extends JPanel implements MouseListener {
 		height = getHeight();
 		middleX = (width / 2) + (offset / 2);
 		middleY = (height / 2) + (offset / 2);
+
+		squareWidth = (width - offset) / 20;
+		squareHeight = (height - offset) / 10;
 	}
 
 	public void drawBoard(Graphics2D g) {
@@ -52,11 +91,6 @@ public class Map extends JPanel implements MouseListener {
 		g.draw(new Line2D.Double(middleX, 0, middleX, height));
 		g.setStroke(oldStroke);
 
-		float squareWidth = (width - offset) / 20;
-		float squareHeight = (height - offset) / 10;
-
-		float squareStretch = 30;
-
 		char[] alphabet = "abcdefghij".toCharArray();
 
 		for (float i = 0, x, y; i < 10; i++) {
@@ -65,15 +99,15 @@ public class Map extends JPanel implements MouseListener {
 
 			// Computer Columns
 			g.drawString(String.valueOf((int) i + 1), (squareWidth / 2) + x - 4, 20);
-			g.draw(new Rectangle2D.Double(x, 0, squareWidth, squareStretch));
+			g.draw(new Rectangle2D.Double(x, 0, squareWidth, offset));
 
 			// Human Columns
 			g.drawString(String.valueOf((int) i + 1), (middleX - offset) + (squareWidth / 2) + x - 4, 20);
-			g.draw(new Rectangle2D.Double((middleX - offset) + x, 0, squareWidth, squareStretch));
+			g.draw(new Rectangle2D.Double((middleX - offset) + x, 0, squareWidth, offset));
 
 			// Computer Rows
 			float letterColumnY = (squareHeight / 2) + y + 4;
-			g.draw(new Rectangle2D.Double(0, y, squareStretch, squareHeight));
+			g.draw(new Rectangle2D.Double(0, y, offset, squareHeight));
 			g.drawString(String.valueOf(alphabet[(int) i]), 10, letterColumnY);
 		}
 

@@ -3,29 +3,38 @@ import java.util.Random;
 
 public class Ship {
 
-	private int x, y, size;
+	private int x, y, size, type;
 	private boolean xOriented;
 
+	public final static int ptBoat = 0;
+	public final static int sub = 1;
+	public final static int destroyer = 2;
+	public final static int battleship = 3;
+	public final static int carrier = 4;
+
+	private static final Integer[] typeSizes = { 2, 3, 3, 4, 5 };
 	private ArrayList<Integer> hits;
 
-	public Ship(int x, int y, int size, boolean xOriented) {
+	public Ship(int x, int y, int type, boolean xOriented) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
+		this.type = type;
+		this.size = typeSizes[type];
 		this.xOriented = xOriented;
 	}
 
-	public static Ship createRandom(int size) {
+	public static Ship createRandom(int type) {
 		Random r = new Random();
+		int size = typeSizes[type];
 		boolean xOriented = r.nextBoolean();
-		int x = r.nextInt(11), y = r.nextInt(11);
+		int x = r.nextInt(10), y = r.nextInt(10);
 		if (xOriented) {
-			x = r.nextInt(11 - size) + 1;
+			x = r.nextInt(10 - size);
 		} else {
-			y = r.nextInt(11 - size) + 1;
+			y = r.nextInt(10 - size);
 		}
 
-		return new Ship(x, y, size, xOriented);
+		return new Ship(x, y, type, xOriented);
 	}
 
 	public void hit(int i) {
@@ -85,5 +94,9 @@ public class Ship {
 	public String toString() {
 		return String.format("X - %s, Y - %s, Size - %s, Orientation - %s", x, y, size,
 				xOriented ? "x-oriented" : "y-oriented");
+	}
+
+	public int getType() {
+		return type;
 	}
 }

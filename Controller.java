@@ -13,16 +13,22 @@ public class Controller extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private static ShipList computerShips, humanShips;
+	public ShipList computerShips, humanShips;
+
+	public Controller() {
+		initializeShips();
+	}
 
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				JFrame frame = new JFrame("Battle Ship");
+				Controller c = new Controller();
+
+				JFrame frame = new JFrame("Battleship");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.add(new Controller(), BorderLayout.NORTH);
-				frame.add(new Map(), BorderLayout.CENTER);
+				frame.add(c, BorderLayout.NORTH);
+				frame.add(new Map(c), BorderLayout.CENTER);
 				frame.pack();
 				frame.setBackground(new Color(0x0E1F2C));
 				frame.setLocationByPlatform(true);
@@ -30,12 +36,10 @@ public class Controller extends JPanel {
 				frame.setVisible(true);
 			}
 		});
-
-		initializeShips();
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(getWidth(), 100);
+		return new Dimension(getWidth(), 150);
 	}
 
 	public void paintComponent(Graphics g1) {
@@ -50,12 +54,13 @@ public class Controller extends JPanel {
 		g.drawString("Computer Player", getWidth() * (float) .75, getHeight() - 20);
 	}
 
-	public static void initializeShips() {
+	public void initializeShips() {
 		computerShips = new ShipList();
 		humanShips = new ShipList();
 		Ship ship;
 
-		for (int i = 1; i <= 5; i++) {
+		Integer[] types = { Ship.ptBoat, Ship.sub, Ship.carrier, Ship.battleship, Ship.destroyer };
+		for (int i : types) {
 			do {
 				ship = Ship.createRandom(i);
 			} while (computerShips.shipAlreadyExists(ship));
@@ -65,8 +70,6 @@ public class Controller extends JPanel {
 				ship = Ship.createRandom(i);
 			} while (humanShips.shipAlreadyExists(ship));
 			humanShips.add(ship);
-
-			System.out.println(i);
 		}
 	}
 }
