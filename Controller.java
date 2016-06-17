@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,9 +15,13 @@ public class Controller extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public ShipList computerShips, humanShips;
+	public ArrayList<Integer[]> computerMisses, humanMisses;
 
 	public Controller() {
 		initializeShips();
+		
+		computerMisses = new ArrayList<Integer[]>();
+		humanMisses = new ArrayList<Integer[]>();
 	}
 
 	public static void main(String[] args) {

@@ -9,6 +9,7 @@ import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -44,6 +45,20 @@ public class Map extends JPanel implements MouseListener {
 		drawBoard(g);
 		drawShips(g);
 		drawHits(g);
+		drawMisses(g);
+	}
+
+	public void drawMisses(Graphics2D g) {
+		for (Integer[] point : controller.humanMisses) {
+			float squareX = middleX + (point[0] * squareWidth) + 2;
+			float squareY = (point[1] * squareHeight) + offset + 2;
+
+			Ellipse2D ellipse = new Ellipse2D.Double(squareX, squareY, squareWidth - 4, squareHeight - 4);
+			Color c = g.getColor();
+			g.setColor(new Color(0x31B275));
+			g.fill(ellipse);
+			g.setColor(c);
+		}
 	}
 
 	public void drawHits(Graphics2D g) {
@@ -51,22 +66,18 @@ public class Map extends JPanel implements MouseListener {
 			ship.getHits().forEach((i) -> {
 				float shipX = middleX + (ship.getX() * squareWidth);
 				float shipY = (ship.getY() * squareHeight) + offset;
-				
-				if(ship.isXOriented()) {
-					shipX += i * squareWidth; 
+
+				if (ship.isXOriented()) {
+					shipX += i * squareWidth;
 				} else {
-					shipY += i * squareHeight; 
+					shipY += i * squareHeight;
 				}
-				
-				System.out.println(shipX + " - " + shipY);
-				
+
 				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, squareWidth, squareHeight);
 				Color c = g.getColor();
-				g.setColor(Color.red);
-				g.draw(rect);
+				g.setColor(new Color(0x560809));
+				g.fill(rect);
 				g.setColor(c);
-				
-				System.out.println(i);
 			});
 		}
 	}
@@ -152,17 +163,18 @@ public class Map extends JPanel implements MouseListener {
 		if (p.getY() <= offset || p.getY() <= offset) {
 			// Click off the map in the gutter
 		} else if (p.getX() >= middleX) {
-			System.out.println(p);
 			double clickXCord = p.getX() - middleX;
 			double clickYCord = p.getY() - offset;
 
 			int clickX = (int) Math.ceil(clickXCord / squareWidth) - 1;
 			int clickY = (int) Math.ceil(clickYCord / squareHeight) - 1;
 
-			System.out.println(clickX + " - " + clickY);
 			Ship s = controller.computerShips.shipAtCordinates(clickX, clickY);
 			if (s != null) {
 				s.hitCordinate(clickX, clickY);
+			} else {
+				Integer[] mp = { clickX, clickY };
+				controller.humanMisses.add(mp);
 			}
 
 			repaint();
