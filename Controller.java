@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,8 @@ import javax.swing.JPanel;
 public class Controller extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+
+	private static ArrayList<Ship> computerShips, humanShips;
 
 	public static void main(String[] args) {
 
@@ -28,6 +31,8 @@ public class Controller extends JPanel {
 				frame.setVisible(true);
 			}
 		});
+
+		initializeShips();
 	}
 
 	public Dimension getPreferredSize() {
@@ -44,5 +49,9 @@ public class Controller extends JPanel {
 
 		g.drawString("Human Player", getWidth() * (float) .25, getHeight() - 20);
 		g.drawString("Computer Player", getWidth() * (float) .75, getHeight() - 20);
+	}
+
+	public static void initializeShips() {
+
 	}
 }
