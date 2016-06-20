@@ -103,4 +103,19 @@ public class Ship {
 	public ArrayList<Integer> getHits() {
 		return hits;
 	}
+	public boolean gameOver(){
+    	if ( computerHit == 17){
+    		// JFrame Victory
+    		return true;
+    		
+    		else if (humanHit == 17){
+    		// JFrame Defeat
+    			return true;
+    		}
+    		else if (surrender == true){
+    		// JFrame Surrender
+    			return true;
+    		}
+    	}
+    	return false;
 }
