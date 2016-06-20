@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.*;
+import java.io.*;
+import javax.imageio.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -79,4 +82,55 @@ public class Controller extends JPanel {
 		
 		System.out.println(computerShips);
 	}
+	public boolean gameOver(){
+    	if ( computerHit == 17){
+    		JFrame F = new JFrame("Victory");
+    		
+    		try{
+    			F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Victory.png")))));
+    		}catch(IOException e)
+    		{
+    			System.out.println("Image Doesn't exist");
+    		}
+    		F.setResizable(false);
+    		F.pack();
+    		F.setVisible(true);
+    		F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	}
+    		return true;
+    		
+    		else if (humanHit == 17){
+    			JFrame F = new JFrame("Defeat");
+    			
+    			try{
+    				F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Defeat.png")))));
+    			}catch(IOException e)
+    			{
+    				System.out.println("Image Doesn't exist");
+    			}
+    			F.setResizable(false);
+    			F.pack();
+    			F.setVisible(true);
+    			F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    		}
+    			return true;
+    		}
+    		else if (surrender == true){
+    			JFrame F = new JFrame("Surrender");
+    			
+    			try{
+    				F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Surrender.png")))));
+    			}catch(IOException e)
+    			{
+    				System.out.println("Image Doesn't exist");
+    			}
+    			F.setResizable(false);
+    			F.pack();
+    			F.setVisible(true);
+    			F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    		}
+    			return true;
+    		}
+    	}
+    	return false;
 }
