@@ -84,53 +84,24 @@ public class Controller extends JPanel {
 	}
 	public boolean gameOver(){
     	if ( computerHit == 17){
-    		JFrame F = new JFrame("Victory");
-    		
-    		try{
-    			F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Victory.png")))));
-    		}catch(IOException e)
-    		{
-    			System.out.println("Image Doesn't exist");
-    		}
-    		F.setResizable(false);
-    		F.pack();
-    		F.setVisible(true);
-    		F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	}
+    		frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Victory.png")))));
+    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  
     		return true;
-    		
-    		else if (humanHit == 17){
-    			JFrame F = new JFrame("Defeat");
-    			
-    			try{
-    				F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Defeat.png")))));
-    			}catch(IOException e)
-    			{
-    				System.out.println("Image Doesn't exist");
-    			}
-    			F.setResizable(false);
-    			F.pack();
-    			F.setVisible(true);
-    			F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    		}
-    			return true;
-    		}
-    		else if (surrender == true){
-    			JFrame F = new JFrame("Surrender");
-    			
-    			try{
-    				F.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Surrender.png")))));
-    			}catch(IOException e)
-    			{
-    				System.out.println("Image Doesn't exist");
-    			}
-    			F.setResizable(false);
-    			F.pack();
-    			F.setVisible(true);
-    			F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    		}
-    			return true;
-    		}
     	}
+    		
+    	else if (humanHit == 17){
+    		frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Defeat.png")))));
+    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    			
+    		return true;
+    		}
+    	else if (surrender == true){
+    		frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Surrender.png"))))); 			
+    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    		return true;
+    		}
     	return false;
+	}
 }
