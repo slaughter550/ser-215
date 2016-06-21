@@ -202,12 +202,14 @@ public class Map extends JPanel implements MouseListener {
 			} else {
 				Integer[] mp = { clickX, clickY };
 				controller.humanMisses.add(mp);
-				
+
 				Map map = this;
 				(new Thread() {
 					public void run() {
 						map.removeMouseListener(map);
-						try {sleep(1000);} catch(Exception e) {};
+						try {
+							sleep(1000);
+						} catch (Exception e) {}
 						controller.computerMove();
 						controller.repaint();
 						map.addMouseListener(map);
@@ -215,13 +217,13 @@ public class Map extends JPanel implements MouseListener {
 					}
 				}).start();
 			}
-			
+
 			(new Thread() {
 				public void run() {
 					repaint();
 					controller.repaint();
 				}
-			}).start();			
+			}).start();
 		} else {
 			// Clicked on their own side
 		}

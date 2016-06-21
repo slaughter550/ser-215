@@ -8,11 +8,14 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,6 +36,7 @@ public class Controller extends JPanel {
 	public JFrame frame;
 
 	private ArrayList<Point> computerGuesses, educatedGuesses;
+	public boolean surrendered = false;
 
 	public Controller(JFrame frame) {
 		super(new BorderLayout());
@@ -90,6 +94,19 @@ public class Controller extends JPanel {
 		timer.setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(timer, BorderLayout.CENTER);
+		JPanel p = new JPanel();
+		JButton surrender = new JButton("Surrender");
+		surrender.setHorizontalAlignment(SwingConstants.CENTER);
+		surrender.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				surrendered = true;
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		p.add(surrender);
+		p.setOpaque(false);
+		add(p, BorderLayout.SOUTH);
 	}
 
 	public void startTimer() {
@@ -101,7 +118,7 @@ public class Controller extends JPanel {
 					long seconds = (miliseconds / 1000) % 60;
 					long minutes = (int) (miliseconds / 1000 / 60);
 
-					timer.setText(String.format("%02d:%02d", minutes, seconds));
+					timer.setText(String.format("    %02d:%02d", minutes, seconds));
 
 					try {
 						sleep(500);
@@ -175,14 +192,10 @@ public class Controller extends JPanel {
 	}
 
 	public void gameOver(Graphics2D g) {
-		gameOver(g, false);
-	}
-
-	public void gameOver(Graphics2D g, boolean surrenderd) {
 
 		String path = null;
 
-		if (surrenderd) {
+		if (surrendered) {
 			path = "images/surrender.png";
 		} else if (computerShips.isSunk()) {
 			path = "images/victory.png";
@@ -207,6 +220,8 @@ public class Controller extends JPanel {
 			}
 
 			g.drawImage(img.getImage(), 0, 0, scaledWidth, scaledHeight, null);
+			frame.revalidate();
+			frame.repaint();
 		}
 	}
 
