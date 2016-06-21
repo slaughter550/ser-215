@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,9 +28,13 @@ public class Controller extends JPanel {
 
 	public Thread timerCron;
 	public JLabel timer;
+	public JFrame frame;
 
-	public Controller() {
+	public Controller(JFrame frame) {
 		super(new BorderLayout());
+		this.frame = frame;
+		setBackground(new Color(0x0E1F2C));
+
 		initializeShips();
 
 		initTimer();
@@ -44,9 +49,9 @@ public class Controller extends JPanel {
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				Controller c = new Controller();
-
 				JFrame frame = new JFrame("Battleship");
+				Controller c = new Controller(frame);
+
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.add(c, BorderLayout.NORTH);
 				frame.add(new Map(c), BorderLayout.CENTER);
@@ -65,7 +70,6 @@ public class Controller extends JPanel {
 
 	public void paintComponent(Graphics g1) {
 		super.paintComponent(g1);
-		setBackground(new Color(0x0E1F2C));
 
 		Graphics2D g = (Graphics2D) g1;
 		g.setColor(Color.lightGray);
@@ -161,5 +165,41 @@ public class Controller extends JPanel {
 		}
 
 		System.out.println(computerShips);
+	}
+
+	public void gameOver(Graphics2D g) {
+		gameOver(g, false);
+	}
+
+	public void gameOver(Graphics2D g, boolean surrenderd) {
+
+		String path = null;
+
+		if (surrenderd) {
+			path = "images/surrender.png";
+		} else if (computerShips.isSunk()) {
+			path = "images/victory.png";
+		} else if (humanShips.isSunk()) {
+			path = "images/defeat.png";
+		}
+
+		if (path != null) {
+			frame.remove(this);
+			ImageIcon img = new ImageIcon(path);
+			int scaledHeight = 0;
+			int scaledWidth = 0;
+
+			while (scaledHeight < frame.getHeight()) {
+				scaledHeight++;
+				scaledWidth = (int) (scaledHeight * ((double) img.getIconWidth() / (double) img.getIconHeight()));
+			}
+
+			while (scaledWidth < frame.getWidth()) {
+				scaledWidth++;
+				scaledHeight = (int) (scaledWidth * ((double) img.getIconHeight() / (double) img.getIconWidth()));
+			}
+
+			g.drawImage(img.getImage(), 0, 0, scaledWidth, scaledHeight, null);
+		}
 	}
 }

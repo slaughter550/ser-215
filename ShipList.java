@@ -32,4 +32,14 @@ public class ShipList extends ArrayList<Ship> {
 
 		return null;
 	}
+	
+	public boolean isSunk() {
+		for(Ship ship : this) {
+			if(!ship.isSunk()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

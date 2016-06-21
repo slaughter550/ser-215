@@ -46,6 +46,7 @@ public class Map extends JPanel implements MouseListener {
 		drawShips(g);
 		drawHits(g);
 		drawMisses(g);
+		controller.gameOver(g);
 	}
 
 	public void drawMisses(Graphics2D g) {
@@ -91,12 +92,7 @@ public class Map extends JPanel implements MouseListener {
 			float shipY = (ship.getYPosition() * squareHeight) + offset + 5;
 
 			try {
-				String path = getClass()
-						.getResource("shipimages/" + ship.getType() + (ship.isXOriented() ? "-h" : "") + ".png")
-						.getPath();
-				path = java.net.URLDecoder.decode(path, "UTF-8");
-				BufferedImage img = ImageIO.read(new File(path));
-
+				BufferedImage img = ImageIO.read(new File("images/" + ship.getType() + (ship.isXOriented() ? "-h" : "") + ".png"));
 				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, shipWidth, shipHeight);
 				TexturePaint imagep = new TexturePaint(img, rect);
 

@@ -46,7 +46,7 @@ public class Ship extends JLabel {
 				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(3 / getLength() + getLength() * 2) + 40, 18, 10, 10);
 				g.fill(ellipse);
 			}
-			
+
 			else if(getType() == sub || getType() == destroyer){
 				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(2 / getLength() + getLength()) + 40, 18, 10, 10);
 				g.fill(ellipse);
@@ -65,7 +65,7 @@ public class Ship extends JLabel {
 	}
 
 	public static ImageIcon getImage(int type, int width, int height) {
-		ImageIcon img = new ImageIcon("shipimages/" + type + "-h.png");
+		ImageIcon img = new ImageIcon("images/" + type + "-h.png");
 		Image scale = img.getImage();
 
 		Image newImg = scale.getScaledInstance(width, height, Image.SCALE_DEFAULT);
