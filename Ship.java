@@ -1,9 +1,17 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Ship {
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
-	private int x, y, size, type;
+public class Ship extends JLabel {
+
+	private int xPosition, yPosition, shipLength, shipType;
 	private boolean xOriented;
 
 	public final static int ptBoat = 0;
@@ -16,11 +24,52 @@ public class Ship {
 	private ArrayList<Integer> hits = new ArrayList<Integer>();
 
 	public Ship(int x, int y, int type, boolean xOriented) {
-		this.x = x;
-		this.y = y;
-		this.type = type;
-		this.size = typeSizes[type];
+		super(getImage(type, 80, 25));
+
+		xPosition = x;
+		yPosition = y;
+		shipType = type;
+		shipLength = typeSizes[type];
 		this.xOriented = xOriented;
+	}
+
+	public void paintComponent(Graphics g1) {
+		super.paintComponent(g1);
+		setBackground(new Color(0x0E1F2C));
+
+		Graphics2D g = (Graphics2D) g1;
+		Color c = g.getColor();
+		g.setColor(new Color(0x9C4141));
+
+		for (int i = 0; i < hits.size(); i++) {
+			if(getType() == ptBoat){
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(3 / getLength() + getLength() * 2) + 40, 18, 10, 10);
+				g.fill(ellipse);
+			}
+			
+			else if(getType() == sub || getType() == destroyer){
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(2 / getLength() + getLength()) + 40, 18, 10, 10);
+				g.fill(ellipse);
+			}
+			else if(getType() == battleship){
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(2 / getLength() + 2) + 40, 18, 10, 10);
+				g.fill(ellipse);
+			}
+			else if(getType() == carrier){
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(4 / getLength() + 1.6) + 40, 18, 10, 10);
+				g.fill(ellipse);
+			}
+
+		}
+		g.setColor(c);
+	}
+
+	public static ImageIcon getImage(int type, int width, int height) {
+		ImageIcon img = new ImageIcon("shipimages/" + type + "-h.png");
+		Image scale = img.getImage();
+
+		Image newImg = scale.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		return new ImageIcon(newImg);
 	}
 
 	public static Ship createRandom(int type) {
@@ -44,9 +93,9 @@ public class Ship {
 	}
 
 	public boolean isCordinate(int x, int y) {
-		if (xOriented && x >= this.x && x < this.x + size && this.y == y) {
+		if (xOriented && x >= xPosition && x < xPosition + getLength() && yPosition == y) {
 			return true;
-		} else if (!xOriented && y >= this.y && y < this.y + size && this.x == x) {
+		} else if (!xOriented && y >= yPosition && y < yPosition + getLength() && xPosition == x) {
 			return true;
 		}
 
@@ -68,36 +117,36 @@ public class Ship {
 	}
 
 	private int cordinateToShipIndex(int x, int y) {
-		return xOriented ? x - this.x : y - this.y;
+		return xOriented ? x - xPosition : y - yPosition;
 	}
 
 	public boolean isSunk() {
-		return hits.size() == size;
+		return hits.size() == getLength();
 	}
 
 	public boolean isXOriented() {
 		return xOriented;
 	}
 
-	public int getSize() {
-		return size;
+	public int getXPosition() {
+		return xPosition;
 	}
 
-	public int getX() {
-		return x;
+	public int getYPosition() {
+		return yPosition;
 	}
 
-	public int getY() {
-		return y;
+	public int getLength() {
+		return shipLength;
 	}
 
 	public String toString() {
-		return String.format("X - %s, Y - %s, Size - %s, Orientation - %s", x, y, size,
+		return String.format("X - %s, Y - %s, Size - %s, Orientation - %s", xPosition, yPosition, getLength(),
 				xOriented ? "x-oriented" : "y-oriented");
 	}
 
 	public int getType() {
-		return type;
+		return shipType;
 	}
 
 	public ArrayList<Integer> getHits() {

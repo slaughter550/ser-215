@@ -64,8 +64,8 @@ public class Map extends JPanel implements MouseListener {
 	public void drawHits(Graphics2D g) {
 		for (Ship ship : controller.computerShips) {
 			ship.getHits().forEach((i) -> {
-				float shipX = middleX + (ship.getX() * squareWidth);
-				float shipY = (ship.getY() * squareHeight) + offset;
+				float shipX = middleX + (ship.getXPosition() * squareWidth);
+				float shipY = (ship.getYPosition() * squareHeight) + offset;
 
 				if (ship.isXOriented()) {
 					shipX += i * squareWidth;
@@ -84,11 +84,11 @@ public class Map extends JPanel implements MouseListener {
 
 	public void drawShips(Graphics2D g) {
 		for (Ship ship : controller.humanShips) {
-			float shipWidth = (ship.isXOriented() ? squareWidth * ship.getSize() : squareWidth) - 10;
-			float shipHeight = (ship.isXOriented() ? squareHeight : squareHeight * ship.getSize()) - 10;
+			float shipWidth = (ship.isXOriented() ? squareWidth * ship.getLength() : squareWidth) - 10;
+			float shipHeight = (ship.isXOriented() ? squareHeight : squareHeight * ship.getLength()) - 10;
 
-			float shipX = (ship.getX() * squareWidth) + offset + 5;
-			float shipY = (ship.getY() * squareHeight) + offset + 5;
+			float shipX = (ship.getXPosition() * squareWidth) + offset + 5;
+			float shipY = (ship.getYPosition() * squareHeight) + offset + 5;
 
 			try {
 				String path = getClass()
@@ -178,6 +178,7 @@ public class Map extends JPanel implements MouseListener {
 			}
 
 			repaint();
+			controller.repaint();
 		} else {
 			// Clicked on their own side
 		}

@@ -5,13 +5,17 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 public class Controller extends JPanel {
 
@@ -30,6 +34,7 @@ public class Controller extends JPanel {
 
 		initTimer();
 		startTimer();
+		addFleetStatus();
 
 		computerMisses = new ArrayList<Integer[]>();
 		humanMisses = new ArrayList<Integer[]>();
@@ -65,9 +70,6 @@ public class Controller extends JPanel {
 		Graphics2D g = (Graphics2D) g1;
 		g.setColor(Color.lightGray);
 		g.drawLine(0, getHeight(), getWidth(), getHeight());
-
-		g.drawString("Human Player", getWidth() * (float) .25, getHeight() - 20);
-		g.drawString("Computer Player", getWidth() * (float) .75, getHeight() - 20);
 	}
 
 	public void initTimer() {
@@ -98,6 +100,46 @@ public class Controller extends JPanel {
 			}
 		});
 		timerCron.start();
+	}
+
+	public void addFleetStatus() {
+		JPanel compFleet = new JPanel();
+		compFleet.setLayout(new GridLayout(3, 2));
+		compFleet.setBackground(Color.darkGray);
+		JPanel playerFleet = new JPanel();
+		playerFleet.setLayout(new GridLayout(3, 2));
+		playerFleet.setBackground(Color.darkGray);
+
+		JTextArea player = new JTextArea(" Your Fleet ");
+		JTextArea comp = new JTextArea(" Enemy Fleet ");
+		comp.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		player.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+
+		Font labelFont = new Font("Helvetica", Font.BOLD, 24);
+		player.setForeground(Color.WHITE);
+		comp.setForeground(Color.WHITE);
+		player.setFont(labelFont);
+		comp.setFont(labelFont);
+		comp.setBackground(Color.darkGray);
+		player.setBackground(Color.darkGray);
+
+		playerFleet.setBorder(BorderFactory.createRaisedBevelBorder());
+		compFleet.setBorder(BorderFactory.createRaisedBevelBorder());
+
+		compFleet.add(comp);
+		playerFleet.add(player);
+
+		for (Ship ship : computerShips) {
+			compFleet.add(ship);
+		}
+
+		add(compFleet, BorderLayout.EAST);
+
+		for (Ship ship : humanShips) {
+			playerFleet.add(ship);
+		}
+
+		add(playerFleet, BorderLayout.WEST);
 	}
 
 	public void initializeShips() {

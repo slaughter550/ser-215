@@ -7,14 +7,14 @@ public class ShipList extends ArrayList<Ship> {
 	public boolean shipAlreadyExists(Ship newShip) {
 		for (Ship ship : this) {
 			if (newShip.isXOriented()) {
-				for (int i = newShip.getX(); i < newShip.getX() + newShip.getSize(); i++) {
-					if (ship.isCordinate(i, newShip.getY())) {
+				for (int i = newShip.getXPosition(); i < newShip.getXPosition() + newShip.getLength(); i++) {
+					if (ship.isCordinate(i, newShip.getYPosition())) {
 						return true;
 					}
 				}
 			} else {
-				for (int i = newShip.getY(); i < newShip.getY() + newShip.getSize(); i++) {
-					if (ship.isCordinate(newShip.getX(), i)) {
+				for (int i = newShip.getYPosition(); i < newShip.getYPosition() + newShip.getLength(); i++) {
+					if (ship.isCordinate(newShip.getXPosition(), i)) {
 						return true;
 					}
 				}
@@ -23,13 +23,13 @@ public class ShipList extends ArrayList<Ship> {
 
 		return false;
 	}
-	
+
 	public Ship shipAtCordinates(int x, int y) {
 		for (Ship ship : this) {
-			if(ship.isCordinate(x, y))
+			if (ship.isCordinate(x, y))
 				return ship;
 		}
-		
+
 		return null;
 	}
 }
