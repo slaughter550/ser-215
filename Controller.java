@@ -6,8 +6,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -30,6 +32,8 @@ public class Controller extends JPanel {
 	public JLabel timer;
 	public JFrame frame;
 
+	private ArrayList<Point> computerGuesses, educatedGuesses;
+
 	public Controller(JFrame frame) {
 		super(new BorderLayout());
 		this.frame = frame;
@@ -43,6 +47,9 @@ public class Controller extends JPanel {
 
 		computerMisses = new ArrayList<Integer[]>();
 		humanMisses = new ArrayList<Integer[]>();
+
+		educatedGuesses = new ArrayList<Point>();
+		computerGuesses = new ArrayList<Point>();
 	}
 
 	public static void main(String[] args) {
@@ -200,6 +207,77 @@ public class Controller extends JPanel {
 			}
 
 			g.drawImage(img.getImage(), 0, 0, scaledWidth, scaledHeight, null);
+		}
+	}
+
+	public void computerMove() {
+		Point guess = null;
+		Random r = new Random();
+		int x, y;
+
+		// make educated guess
+		if (!educatedGuesses.isEmpty()) {
+			// choose random point from smart moves list
+			int index = r.nextInt(educatedGuesses.size());
+			guess = educatedGuesses.get(index);
+
+			educatedGuesses.remove(index);
+			computerGuesses.add(guess);
+
+			x = (int) guess.getX();
+			y = (int) guess.getY();
+		} else {
+			while (true) {
+				x = r.nextInt(10);
+				y = r.nextInt(10);
+
+				guess = new Point(x, y);
+
+				if (!computerGuesses.contains(guess)) {
+					computerGuesses.add(guess);
+					break;
+				}
+			}
+
+			x = (int) guess.getX();
+			y = (int) guess.getY();
+		}
+		System.out.println("Computer Guess: " + guess);
+		// use coordinate
+		Ship s = humanShips.shipAtCordinates(x, y);
+		// hit
+		if (s != null) {
+			s.hitCordinate(x, y);
+			// get possible smart moves based on hit coordinate
+			// check x and y values are in range
+			if (x < 10) {
+				addEducatedGuess(new Point((x + 1), y));
+			}
+			if (x > 0) {
+				addEducatedGuess(new Point((x - 1), y));
+			}
+			if (y < 10) {
+				addEducatedGuess(new Point(x, (y + 1)));
+			}
+			if (y > 0) {
+				addEducatedGuess(new Point(x, (y - 1)));
+			}
+
+			System.out.println("Educated Guesses");
+			for (Point p : educatedGuesses) {
+				System.out.println(p);
+			}
+			// if hit - second turn
+			computerMove();
+		} else {
+			Integer[] mp = { x, y };
+			computerMisses.add(mp);
+		}
+	}
+
+	public void addEducatedGuess(Point p) {
+		if (!computerGuesses.contains(p)) {
+			educatedGuesses.add(p);
 		}
 	}
 }

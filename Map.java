@@ -60,12 +60,42 @@ public class Map extends JPanel implements MouseListener {
 			g.fill(ellipse);
 			g.setColor(c);
 		}
+
+		for (Integer[] point : controller.computerMisses) {
+			float squareX = (point[0] * squareWidth) + offset + 2;
+			float squareY = (point[1] * squareHeight) + offset + 2;
+
+			Ellipse2D ellipse = new Ellipse2D.Double(squareX, squareY, squareWidth - 4, squareHeight - 4);
+			Color c = g.getColor();
+			g.setColor(new Color(0x31B275));
+			g.fill(ellipse);
+			g.setColor(c);
+		}
 	}
 
 	public void drawHits(Graphics2D g) {
 		for (Ship ship : controller.computerShips) {
 			ship.getHits().forEach((i) -> {
 				float shipX = middleX + (ship.getXPosition() * squareWidth);
+				float shipY = (ship.getYPosition() * squareHeight) + offset;
+
+				if (ship.isXOriented()) {
+					shipX += i * squareWidth;
+				} else {
+					shipY += i * squareHeight;
+				}
+
+				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, squareWidth, squareHeight);
+				Color c = g.getColor();
+				g.setColor(new Color(0x560809));
+				g.fill(rect);
+				g.setColor(c);
+			});
+		}
+
+		for (Ship ship : controller.humanShips) {
+			ship.getHits().forEach((i) -> {
+				float shipX = (ship.getXPosition() * squareWidth) + offset;
 				float shipY = (ship.getYPosition() * squareHeight) + offset;
 
 				if (ship.isXOriented()) {
@@ -92,7 +122,8 @@ public class Map extends JPanel implements MouseListener {
 			float shipY = (ship.getYPosition() * squareHeight) + offset + 5;
 
 			try {
-				BufferedImage img = ImageIO.read(new File("images/" + ship.getType() + (ship.isXOriented() ? "-h" : "") + ".png"));
+				BufferedImage img = ImageIO
+						.read(new File("images/" + ship.getType() + (ship.isXOriented() ? "-h" : "") + ".png"));
 				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, shipWidth, shipHeight);
 				TexturePaint imagep = new TexturePaint(img, rect);
 
@@ -171,10 +202,26 @@ public class Map extends JPanel implements MouseListener {
 			} else {
 				Integer[] mp = { clickX, clickY };
 				controller.humanMisses.add(mp);
+				
+				Map map = this;
+				(new Thread() {
+					public void run() {
+						map.removeMouseListener(map);
+						try {sleep(1000);} catch(Exception e) {};
+						controller.computerMove();
+						controller.repaint();
+						map.addMouseListener(map);
+						map.repaint();
+					}
+				}).start();
 			}
-
-			repaint();
-			controller.repaint();
+			
+			(new Thread() {
+				public void run() {
+					repaint();
+					controller.repaint();
+				}
+			}).start();			
 		} else {
 			// Clicked on their own side
 		}
