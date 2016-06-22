@@ -22,7 +22,12 @@ public class Map extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	Controller controller;
-	float width, height, middleX, middleY, squareWidth, squareHeight;
+	float width;
+	float height;
+	float middleX;
+	float middleY;
+	float squareWidth;
+	float squareHeight;
 	final float offset = 30;
 	final Color bgColor = new Color(0x0E1F2C);
 
@@ -54,6 +59,9 @@ public class Map extends JPanel implements MouseListener {
 			float squareX = middleX + (point[0] * squareWidth) + 2;
 			float squareY = (point[1] * squareHeight) + offset + 2;
 
+			// System.out.println("Human Misses - " + squareX + " - " +
+			// squareY);
+
 			Ellipse2D ellipse = new Ellipse2D.Double(squareX, squareY, squareWidth - 4, squareHeight - 4);
 			Color c = g.getColor();
 			g.setColor(new Color(0x31B275));
@@ -64,6 +72,9 @@ public class Map extends JPanel implements MouseListener {
 		for (Integer[] point : controller.computerMisses) {
 			float squareX = (point[0] * squareWidth) + offset + 2;
 			float squareY = (point[1] * squareHeight) + offset + 2;
+
+			// System.out.println("Computer Misses - " + squareX + " - " +
+			// squareY);
 
 			Ellipse2D ellipse = new Ellipse2D.Double(squareX, squareY, squareWidth - 4, squareHeight - 4);
 			Color c = g.getColor();
@@ -85,6 +96,8 @@ public class Map extends JPanel implements MouseListener {
 					shipY += i * squareHeight;
 				}
 
+				System.out.println("Human Misses - " + shipX + " - " + shipY);
+
 				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, squareWidth, squareHeight);
 				Color c = g.getColor();
 				g.setColor(new Color(0x560809));
@@ -103,6 +116,8 @@ public class Map extends JPanel implements MouseListener {
 				} else {
 					shipY += i * squareHeight;
 				}
+
+				System.out.println("Human Misses - " + shipX + " - " + shipY);
 
 				Rectangle2D rect = new Rectangle2D.Double(shipX, shipY, squareWidth, squareHeight);
 				Color c = g.getColor();
@@ -209,7 +224,8 @@ public class Map extends JPanel implements MouseListener {
 						map.removeMouseListener(map);
 						try {
 							sleep(1000);
-						} catch (Exception e) {}
+						} catch (Exception e) {
+						}
 						controller.computerMove();
 						controller.repaint();
 						map.addMouseListener(map);

@@ -11,7 +11,10 @@ import javax.swing.JLabel;
 
 public class Ship extends JLabel {
 
-	private int xPosition, yPosition, shipLength, shipType;
+	private int xPosition;
+	private int yPosition;
+	private int shipLength;
+	private int shipType;
 	private boolean xOriented;
 
 	public final static int ptBoat = 0;
@@ -42,21 +45,19 @@ public class Ship extends JLabel {
 		g.setColor(new Color(0x9C4141));
 
 		for (int i = 0; i < hits.size(); i++) {
-			if(getType() == ptBoat){
-				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(3 / getLength() + getLength() * 2) + 40, 18, 10, 10);
+			if (getType() == ptBoat) {
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i * (3 / getLength() + getLength() * 2) + 40, 18, 10, 10);
 				g.fill(ellipse);
 			}
 
-			else if(getType() == sub || getType() == destroyer){
-				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(2 / getLength() + getLength()) + 40, 18, 10, 10);
+			else if (getType() == sub || getType() == destroyer) {
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i * (2 / getLength() + getLength()) + 40, 18, 10, 10);
 				g.fill(ellipse);
-			}
-			else if(getType() == battleship){
-				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(2 / getLength() + 2) + 40, 18, 10, 10);
+			} else if (getType() == battleship) {
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i * (2 / getLength() + 2) + 40, 18, 10, 10);
 				g.fill(ellipse);
-			}
-			else if(getType() == carrier){
-				Ellipse2D ellipse = new Ellipse2D.Double(10 * i *(4 / getLength() + 1.6) + 40, 18, 10, 10);
+			} else if (getType() == carrier) {
+				Ellipse2D ellipse = new Ellipse2D.Double(10 * i * (4 / getLength() + 1.6) + 40, 18, 10, 10);
 				g.fill(ellipse);
 			}
 

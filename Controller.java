@@ -27,15 +27,18 @@ public class Controller extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public ShipList computerShips, humanShips;
-	public ArrayList<Integer[]> computerMisses, humanMisses;
+	public ShipList computerShips;
+	public ShipList humanShips;
+	public ArrayList<Integer[]> computerMisses;
+	public ArrayList<Integer[]> humanMisses;
 	public boolean gameRunning = true;
 
 	public Thread timerCron;
 	public JLabel timer;
 	public JFrame frame;
 
-	private ArrayList<Point> computerGuesses, educatedGuesses;
+	private ArrayList<Point> computerGuesses;
+	private ArrayList<Point> educatedGuesses;
 	public boolean surrendered = false;
 
 	public Controller(JFrame frame) {
